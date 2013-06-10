@@ -542,13 +542,13 @@ navigator.compass = {
 		}
 	},
 	watchHeading : function(compassSuccess, compassError, compassOptions) {
-		return phonegapdesktop.internal.intervalFunction(compassSuccess, compassError, compassOptions?compassOptions.frequency:100, "compass", "heading", "error");
+		return phonegapdesktop.internal.intervalFunction(compassSuccess, compassError, (compassOptions !== undefined && compassOptions.frequency !== undefined) ? compassOptions.frequency : 100, "compass", "heading", "error");
 	},
 	clearWatch : function(watchID) {
 		phonegapdesktop.internal.cancelIntervalFunction(watchID);
 	},
 	watchHeadingFilter : function(compassSuccess, compassError, compassOptions) {
-		return phonegapdesktop.internal.intervalFunction(compassSuccess, compassError, compassOptions?compassOptions.frequency:5000, "compass", "heading", "error");
+		return phonegapdesktop.internal.intervalFunction(compassSuccess, compassError, (compassOptions !== undefined && compassOptions.frequency !== undefined) ? compassOptions.frequency : 100 || 5000, "compass", "heading", "error");
 	},
 	clearWatchFilter : function(watchID) {
 		phonegapdesktop.internal.cancelIntervalFunction(watchID);
@@ -564,7 +564,13 @@ CompassError.COMPASS_NOT_SUPPORTED = 20;
 navigator.network = {
 	connection : {}
 };
+
+navigator.connection = navigator.connection || {};
+
+// Connection information has moved to navigator.connection, leave previous network interface in 
+//	for now.
 phonegapdesktop.internal.setDynamicProperty(navigator.network.connection, "connection", "type");
+phonegapdesktop.internal.setDynamicProperty(navigator.connection, "connection", "type");
 
 var Connection = {};
 Connection.UNKNOWN = "unknown";
